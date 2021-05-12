@@ -7,7 +7,7 @@
 # Pull base image
 FROM ubuntu:18.04
 
-# Install common tools 
+# Install common tools
 RUN apt-get update
 RUN apt-get install -y wget curl nano htop git unzip bzip2 software-properties-common locales
 
@@ -21,8 +21,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set working directory
 WORKDIR /var/www/html
 
-# Set up locales 
-# RUN locale-gen 
+# Set up locales
+# RUN locale-gen
 
 #------------- Application Specific Stuff ----------------------------------------------------
 
@@ -30,18 +30,18 @@ WORKDIR /var/www/html
 RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
 RUN apt update
 RUN apt-get install -y \
-    php7.4-fpm \ 
-    php7.4-common \ 
-    php7.4-curl \ 
-    php7.4-mysql \ 
-    php7.4-mbstring \ 
+    php7.4-fpm \
+    php7.4-common \
+    php7.4-curl \
+    php7.4-mysql \
+    php7.4-mbstring \
     php7.4-json \
     php7.4-xml \
     php7.4-bcmath
 
 # Install NPM and Node.js
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
-RUN apt-get install -y nodejs 
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
 #------------- FPM & Nginx configuration ----------------------------------------------------
 
