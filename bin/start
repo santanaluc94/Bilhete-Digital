@@ -1,0 +1,11 @@
+#!/bin/bash
+echo "Trocando para conta da RD (santanaluc94@gmail.com)"
+git config --global user.email "santanaluc94@gmail.com"
+
+docker start bilhete_digital_mysql
+docker start bilhete_digital_phpmyadmin
+docker start bilhete_digital_php
+docker start bilhete_digital_node_react
+sudo chmod 777 src/
+sudo chmod 777 -Rf src/*
+docker exec -it bilhete_digital_php php artisan serve --host=171.0.0.20 --port=8000

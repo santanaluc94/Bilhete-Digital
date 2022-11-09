@@ -1,0 +1,5 @@
+#!/bin/bash
+docker stop bilhete_digital_mysql
+docker stop bilhete_digital_phpmyadmin
+docker stop bilhete_digital_php
+docker stop bilhete_digital_node_react

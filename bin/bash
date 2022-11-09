@@ -1,0 +1,9 @@
+#!/bin/bash
+ARG=$1
+if [ $ARG = "laravel" ]; then
+    docker exec -it bilhete_digital_php bash
+elif [ $ARG = "react" ]; then
+    docker exec -it bilhete_digital_node_react /bin/sh
+else
+    echo "Nenhum contêiner válido passado para inicializar."
+fi

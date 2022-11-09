@@ -1,0 +1,17 @@
+#!/bin/bash
+ARG=$1
+if [ -z $ARG ]; then
+    docker exec -it -d bilhete_digital_php php -S 171.0.0.20:8000 -t public
+    echo "Contêiner laravel inicializado: http://localhost/"
+    docker exec -it -d bilhete_digital_node_react npm start
+    echo "Contêiner node inicializado: http://localhost:8080/"
+    exit
+fi
+
+if [ $ARG = "laravel" ]; then
+    docker exec -it bilhete_digital_php php -S 171.0.0.20:8000 -t public
+elif [ $ARG = "react" ]; then
+    docker exec -it bilhete_digital_node_react npm start -y
+else
+    echo "Nenhum nome do contêiner válido encontrado para \"$ARG\"."
+fi

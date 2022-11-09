@@ -1,0 +1,29 @@
+#!/bin/bash
+# Install react
+sudo mkdir ./src/node
+sudo mkdir ./src/laravel
+sudo chmod 777 -Rf src/*
+npx create-react-app ./src/node
+sudo touch ./src/node/.env
+sudo chmod 777 ./src/node/.env
+echo 'PORT=8080' > ./src/node/.env
+
+# Build project
+sudo cp ./.docker/node/Dockerfile ./src/node
+sudo cp ./.docker/php/Dockerfile ./src/laravel
+docker compose up --build -d
+sudo chmod 777 src
+sudo chmod 777 -Rf src/*
+sudo rm ./src/node/Dockerfile
+sudo rm ./src/laravel/Dockerfile
+
+# Install Laravel
+docker exec -it bilhete_digital_php apt-get update
+docker exec -it bilhete_digital_php apt-get upgrade -y
+docker exec -it bilhete_digital_php apt-get install -y git curl
+docker exec -it bilhete_digital_php curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# docker exec -it bilhete_digital_php composer create-project --prefer-dist laravel/laravel .
+# docker exec -it bilhete_digital_php composer composer install
+# sudo cp .env ./src/laravel
+
+sudo chmod 777 -Rf src/*

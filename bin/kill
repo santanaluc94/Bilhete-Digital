@@ -1,0 +1,12 @@
+#!/bin/bash
+CURRENT_DIRECTOR=${PWD##*/}
+CURRENT_DIRECTOR="${CURRENT_DIRECTOR,,}"
+CURRENT_DIRECTOR="${CURRENT_DIRECTOR// /_}"
+docker rm -f bilhete_digital_mysql
+docker rm -f bilhete_digital_phpmyadmin
+docker rm -f bilhete_digital_php
+docker rm -f bilhete_digital_node_react
+docker rmi bilhete_digital_docker
+docker volume rm "$CURRENT_DIRECTOR"_db
+docker network rm "$CURRENT_DIRECTOR"-network
+sudo rm -Rf ./src/*

@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql
+    container_name: bilhete_digital_mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_laravel
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      network:
+        ipv4_address: 171.0.0.10
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: bilhete_digital_phpmyadmin
+    restart: always
+    ports:
+      - 8000:80
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      PMA_USER: admin
+      PMA_PASSWORD: admin123
+      MYSQL_ROOT_PASSWORD: root
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      network:
+        ipv4_address: 171.0.0.15
+
+  php:
+    image: bilhete_digital_docker
+    container_name: bilhete_digital_php
+    build:
+      context: .
+      dockerfile: ./.docker/php/Dockerfile
+    restart: always
+    ports:
+      - 80:8000
+    volumes:
+      - ./src/laravel:/var/www/html
+    links:
+      - db
+    depends_on:
+      - db
+    working_dir: /var/www/html
+    networks:
+      network:
+        ipv4_address: 171.0.0.20
+
+  node:
+    image: bilhete_digital_react_docker
+    container_name: bilhete_digital_node_react
+    build:
+      context: ./src/node
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src/node:/home/node/app
+      - ./src/node/node_modules:/home/node/app/node_modules
+    links:
+      - db
+    depends_on:
+      - db
+    working_dir: /home/node/app
+    command: npm start
+    networks:
+      network:
+        ipv4_address: 171.0.0.21
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 171.0.0.0/24
+          gateway: 171.0.0.1
+
+volumes:
+  db:
